@@ -3,6 +3,8 @@
 version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+
+
 jobs:
   say-hello:
     # Specify the execution environment.
@@ -16,9 +18,27 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+          
+  curl-website:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Curl website"
+          command: "./script.sh"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+  scheduled-workflow:
+    triggers:
+      - schedule:
+          cron: "0,10,20,30,40,50 * * * *"
+          filters:
+            branches:
+              only: [master]
+    jobs:
+      - curl-website

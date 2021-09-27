@@ -27,18 +27,19 @@ jobs:
       - run:
           name: "Curl website"
           command: "./script.sh"
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-  scheduled-workflow:
-    triggers:
-      - schedule:
-          cron: "0,10,20,28,30,40,50 * * * *"
-          filters:
-            branches:
-              only: [master]
-    jobs:
-      - curl-website
+  # scheduled-workflow:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0,10,20,28,30,40,50 * * * *"
+  #         filters:
+  #           branches:
+  #             only: [master]
+  #   jobs:
+  #     - curl-website
